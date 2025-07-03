@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Exit on error
+# Exit on any error
 set -e
 
-BUILD_DIR="build"
-BIN_DIR="${BUILD_DIR}/bin"
-TEST_DIR="${BUILD_DIR}/test"
+# Change to the project root directory
+cd "$(dirname "$0")"/..
 
 # Clean previous builds
 echo "Cleaning previous builds..."
@@ -19,10 +18,7 @@ make -C apps/tiny-server clean
 make -C tests/core clean
 make -C tests/libs clean
 
-# Create build directories
-mkdir -p ${BIN_DIR} ${TEST_DIR}
-
-# Build all libraries
+# Build libraries
 echo "Building libraries..."
 make -C libs/math_lib
 make -C libs/net_lib
@@ -42,8 +38,9 @@ make -C tests/core
 
 # Run tests
 echo "Running tests..."
-${TEST_DIR}/test_my_lib
-${TEST_DIR}/test_net_lib
-${TEST_DIR}/test_core
+./build/test/test_my_lib
+./build/test/test_net_lib
+./build/test/test_core
 
-echo "Build and test complete."
+echo "
+Build and test complete."
