@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="./python-workspace-image.png" alt="C Monorepo logo" width="250"/>
+  <img src="./c-repo-image.png" alt="C Monorepo logo" width="250"/>
 </p>
 
 Welcome to my C Monorepo. This repository centralizes diverse C applications and reusable libraries, designed for efficient, scalable, and maintainable project management across various domains.
 
-[![Language: C](https://img.shields.io/badge/Language-C-A8B9CC.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
+[![Language: C](https://img.shields.io/badge/Language-C-A8B9CC.svg)](<https://en.wikipedia.org/wiki/C_(programming_language)>)
 [![Build System: Make](https://img.shields.io/badge/Build%20System-Make-blue.svg)](https://www.gnu.org/software/make/)
 [![Database: SQLite](https://img.shields.io/badge/Database-SQLite-336791.svg)](https://www.sqlite.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/dunamismax/python-workspace/blob/main/LICENSE)
@@ -17,7 +17,6 @@ Welcome to my C Monorepo. This repository centralizes diverse C applications and
 
 - [Introduction](#introduction)
 - [Repository Structure](#repository-structure)
-- [Tech Stack](#tech-stack)
 - [Quick Start](#quick-start)
 - [Getting Started](#getting-started)
 - [Projects Overview](#projects-overview)
@@ -26,12 +25,6 @@ Welcome to my C Monorepo. This repository centralizes diverse C applications and
 - [Contributing](#contributing)
 - [Connect](#connect)
 - [License](#license)
-
----
-
-## Developer Resources
-
-For comprehensive documentation, guides, and resources related to this monorepo, please visit the [docs folder](https://github.com/dunamismax/python-workspace/blob/main/docs/README.md). (Note: `docs` folder is not yet implemented but can be added here.)
 
 ---
 
@@ -98,24 +91,6 @@ c-repo/
 ```
 
 </details>
-
----
-
-## Tech Stack
-
-This monorepo leverages a modern C stack, optimized for performance and developer experience, with a focus on practical applications.
-
-### I. Core Infrastructure & Backend
-
-- **Programming Language:** [C](https://en.wikipedia.org/wiki/C_(programming_language)) (C11/C17)
-- **Build System:** [GNU Make](https://www.gnu.org/software/make/)
-- **Compiler:** [GCC](https://gcc.gnu.org/) (GNU Compiler Collection)
-- **Standard Libraries:** C Standard Library (`stdio.h`, `stdlib.h`, `string.h`, etc.)
-
-### II. Utilities & Libraries
-
-- **Custom Libraries:** `math_lib` (for arithmetic operations)
-- **Core Utilities:** `utils` (e.g., prime number checking), `data_structures` (e.g., linked lists)
 
 ---
 
@@ -282,10 +257,6 @@ A utility that analyzes a given text file, providing statistics such as characte
    make
    ./test_my_lib
    ```
-
-### Code Quality
-
-- **Linting/Formatting**: For C projects, tools like `clang-format` or `uncrustify` can be integrated, but are not included by default in this basic scaffold.
 
 ---
 
