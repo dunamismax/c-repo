@@ -134,11 +134,11 @@ Contributions are welcome! Please feel free to fork the repository, create a fea
 
 Connect with the author, **dunamismax**, on:
 
--   **Twitter:** [@dunamismax](https://twitter.com/dunamismax)
--   **Bluesky:** [@dunamismax.bsky.social](https://bsky.app/profile/dunamismax.bsky.social)
--   **Reddit:** [u/dunamismax](https://www.reddit.com/user/dunamismax)
--   **Discord:** `dunamismax`
--   **Signal:** `dunamismax.66`
+- **Twitter:** [@dunamismax](https://twitter.com/dunamismax)
+- **Bluesky:** [@dunamismax.bsky.social](https://bsky.app/profile/dunamismax.bsky.social)
+- **Reddit:** [u/dunamismax](https://www.reddit.com/user/dunamismax)
+- **Discord:** `dunamismax`
+- **Signal:** `dunamismax.66`
 
 ---
 
