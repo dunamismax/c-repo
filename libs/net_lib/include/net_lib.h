@@ -4,7 +4,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-// Function to create a TCP socket, bind it to a port, and start listening
+int socket_create();
+int socket_bind(int sockfd, int port);
+int socket_listen(int sockfd, int backlog);
 int create_server_socket(int port);
 
 #endif /* NET_LIB_H */

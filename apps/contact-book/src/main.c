@@ -6,14 +6,21 @@
 #define FILENAME "contacts.csv"
 #define MAX_LINE_LEN 256
 
-// Structure to hold contact information
 typedef struct {
     char* name;
     char* phone;
     char* email;
 } Contact;
 
-// Function to free a Contact struct
+void free_contact(void* data);
+void load_contacts(LinkedList* list);
+void save_contacts(LinkedList* list);
+void add_contact(LinkedList* list, const char* name, const char* phone, const char* email);
+void list_contacts(LinkedList* list);
+void find_contact(LinkedList* list, const char* name);
+void delete_contact(LinkedList* list, const char* name);
+void print_usage(const char* prog_name);
+
 void free_contact(void* data) {
     Contact* contact = (Contact*)data;
     free(contact->name);
@@ -22,111 +29,129 @@ void free_contact(void* data) {
     free(contact);
 }
 
-// Function to load contacts from the CSV file into a linked list
-void load_contacts(Node** head) {
+void load_contacts(LinkedList* list) {
     FILE* file = fopen(FILENAME, "r");
-    if (file == NULL) {
-        // If the file doesn't exist, it's not an error, it just means no contacts yet.
-        return;
-    }
+    if (file == NULL) return;
 
     char line[MAX_LINE_LEN];
     while (fgets(line, sizeof(line), file)) {
-        // Remove newline character
-        line[strcspn(line, "\n")] = 0;
+        line[strcspn(line, "\r\n")] = 0;
 
-        Contact* contact = (Contact*)malloc(sizeof(Contact));
-        char* token = strtok(line, ",");
-        contact->name = strdup(token);
-        token = strtok(NULL, ",");
-        contact->phone = strdup(token);
-        token = strtok(NULL, ",");
-        contact->email = strdup(token);
+        Contact* contact = (Contact*)calloc(1, sizeof(Contact));
+        if (!contact) continue;
 
-        append_node(head, contact);
+        char* line_ptr = line;
+        char* token = strsep(&line_ptr, ",");
+        if (token) contact->name = strdup(token);
+
+        token = strsep(&line_ptr, ",");
+        if (token) contact->phone = strdup(token);
+
+        token = strsep(&line_ptr, ",");
+        if (token) contact->email = strdup(token);
+
+        if (contact->name && contact->phone && contact->email) {
+            list_append(list, contact);
+        } else {
+            free_contact(contact);
+        }
     }
-
     fclose(file);
 }
 
-// Function to save all contacts from the linked list to the CSV file
-void save_contacts(Node* head) {
+void save_contacts(LinkedList* list) {
     FILE* file = fopen(FILENAME, "w");
     if (file == NULL) {
         perror("Error opening file for writing");
         return;
     }
-
-    Node* current = head;
-    while (current != NULL) {
+    for (Node* current = list->head; current != NULL; current = current->next) {
         Contact* contact = (Contact*)current->data;
         fprintf(file, "%s,%s,%s\n", contact->name, contact->phone, contact->email);
-        current = current->next;
     }
-
     fclose(file);
 }
 
-// Function to add a new contact
-void add_contact(Node** head, const char* name, const char* phone, const char* email) {
-    Contact* contact = (Contact*)malloc(sizeof(Contact));
+void add_contact(LinkedList* list, const char* name, const char* phone, const char* email) {
+    Contact* contact = (Contact*)calloc(1, sizeof(Contact));
+    if (!contact) {
+        perror("Failed to allocate memory for contact");
+        return;
+    }
     contact->name = strdup(name);
     contact->phone = strdup(phone);
     contact->email = strdup(email);
-    append_node(head, contact);
-    printf("Contact added successfully.\n");
+    list_append(list, contact);
+    printf("Contact '%s' added successfully.\n", name);
 }
 
-// Function to list all contacts
-void list_contacts(Node* head) {
-    if (head == NULL) {
+void list_contacts(LinkedList* list) {
+    if (list->size == 0) {
         printf("No contacts to display.\n");
         return;
     }
-
     printf("--- Contact List ---\n");
-    Node* current = head;
     int count = 1;
-    while (current != NULL) {
+    for (Node* current = list->head; current != NULL; current = current->next) {
         Contact* contact = (Contact*)current->data;
         printf("%d. Name: %s, Phone: %s, Email: %s\n", count++, contact->name, contact->phone, contact->email);
-        current = current->next;
     }
     printf("--------------------\n");
 }
 
-// Function to find a contact by name
-void find_contact(Node* head, const char* name) {
-    if (head == NULL) {
-        printf("No contacts to search.\n");
-        return;
-    }
-
-    printf("--- Search Results ---\n");
-    Node* current = head;
+void find_contact(LinkedList* list, const char* name) {
+    printf("--- Search Results for '%s' ---\n", name);
     int found = 0;
-    while (current != NULL) {
+    for (Node* current = list->head; current != NULL; current = current->next) {
         Contact* contact = (Contact*)current->data;
-        if (strstr(contact->name, name) != NULL) {
-            printf("Name: %s, Phone: %s, Email: %s\n", contact->name, contact->phone, contact->email);
+        if (strcasestr(contact->name, name) != NULL) {
+            printf("  Name: %s, Phone: %s, Email: %s\n", contact->name, contact->phone, contact->email);
             found = 1;
         }
-        current = current->next;
+    }
+    if (!found) {
+        printf("No contact found matching that name.\n");
+    }
+    printf("-------------------------------------\n");
+}
+
+void delete_contact(LinkedList* list, const char* name) {
+    int deleted = 0;
+    for (size_t i = 0; i < list->size; ) {
+        Contact* contact = (Contact*)list_get(list, i);
+        if (strcmp(contact->name, name) == 0) {
+            list_remove(list, i, free_contact);
+            printf("Contact '%s' deleted successfully.\n", name);
+            deleted = 1;
+        } else {
+            i++;
+        }
     }
 
-    if (!found) {
-        printf("No contact found with that name.\n");
+    if (!deleted) {
+        printf("No contact found with the exact name '%s'.\n", name);
     }
-    printf("----------------------\n");
+}
+
+void print_usage(const char* prog_name) {
+    fprintf(stderr, "Usage: %s <command> [options]\n", prog_name);
+    fprintf(stderr, "Commands:\n");
+    fprintf(stderr, "  add <name> <phone> <email>  - Add a new contact\n");
+    fprintf(stderr, "  list                          - List all contacts\n");
+    fprintf(stderr, "  find <name>                   - Find contacts by name\n");
+    fprintf(stderr, "  delete <name>                 - Delete a contact by exact name\n");
 }
 
 int main(int argc, char* argv[]) {
-    Node* head = NULL;
-    load_contacts(&head);
+    LinkedList* contact_list = list_create();
+    if (!contact_list) {
+        return 1;
+    }
+    load_contacts(contact_list);
 
     if (argc < 2) {
-        fprintf(stderr, "Usage: %s <command> [options]\n", argv[0]);
-        fprintf(stderr, "Commands: add, list, find\n");
+        print_usage(argv[0]);
+        list_destroy(contact_list, free_contact);
         return 1;
     }
 
@@ -134,25 +159,35 @@ int main(int argc, char* argv[]) {
 
     if (strcmp(command, "add") == 0) {
         if (argc != 5) {
-            fprintf(stderr, "Usage: %s add <name> <phone> <email>\n", argv[0]);
-            return 1;
+            fprintf(stderr, "Error: Incorrect arguments for add.\n");
+            print_usage(argv[0]);
+        } else {
+            add_contact(contact_list, argv[2], argv[3], argv[4]);
+            save_contacts(contact_list);
         }
-        add_contact(&head, argv[2], argv[3], argv[4]);
-        save_contacts(head);
     } else if (strcmp(command, "list") == 0) {
-        list_contacts(head);
+        list_contacts(contact_list);
     } else if (strcmp(command, "find") == 0) {
         if (argc != 3) {
-            fprintf(stderr, "Usage: %s find <name>\n", argv[0]);
-            return 1;
+            fprintf(stderr, "Error: Incorrect arguments for find.\n");
+            print_usage(argv[0]);
+        } else {
+            find_contact(contact_list, argv[2]);
         }
-        find_contact(head, argv[2]);
+    } else if (strcmp(command, "delete") == 0) {
+        if (argc != 3) {
+            fprintf(stderr, "Error: Incorrect arguments for delete.\n");
+            print_usage(argv[0]);
+        } else {
+            delete_contact(contact_list, argv[2]);
+            save_contacts(contact_list);
+        }
     } else {
         fprintf(stderr, "Unknown command: %s\n", command);
-        return 1;
+        print_usage(argv[0]);
     }
 
-    free_list(head, free_contact);
+    list_destroy(contact_list, free_contact);
 
     return 0;
 }

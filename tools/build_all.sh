@@ -43,6 +43,7 @@ make -C tests/core
 # Run tests
 echo "Running tests..."
 ${TEST_DIR}/test_my_lib
+${TEST_DIR}/test_net_lib
 ${TEST_DIR}/test_core
 
 echo "Build and test complete."
