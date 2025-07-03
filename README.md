@@ -13,21 +13,6 @@ Welcome to my C Monorepo. This repository centralizes diverse C applications and
 
 ---
 
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Repository Structure](#repository-structure)
-- [Quick Start](#quick-start)
-- [Getting Started](#getting-started)
-- [Projects Overview](#projects-overview)
-- [Development Workflow](#development-workflow)
-- [Scripts & Automation](#scripts--automation)
-- [Contributing](#contributing)
-- [Connect](#connect)
-- [License](#license)
-
----
-
 ## Introduction
 
 This monorepo serves as a centralized hub for various C applications and shared libraries. Each project within this repository is designed to be independent and self-contained, ensuring maximum isolation and flexibility for deployment, while benefiting from a unified development environment and shared tooling. This structure promotes code reusability, consistent practices, and simplified dependency management across diverse C projects.
