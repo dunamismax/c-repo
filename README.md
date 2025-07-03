@@ -2,94 +2,51 @@
   <img src="./c-repo-image.png" alt="C Monorepo logo" width="250"/>
 </p>
 
-Welcome to my C Monorepo. This repository centralizes diverse C applications and reusable libraries, designed for efficient, scalable, and maintainable project management across various domains.
+Welcome to my C Monorepo. This repository centralizes diverse C applications and reusable libraries, designed for efficient, scalable, and maintainable project management.
 
 [![Language: C](https://img.shields.io/badge/Language-C-A8B9CC.svg)](<https://en.wikipedia.org/wiki/C_(programming_language)>)
 [![Build System: Make](https://img.shields.io/badge/Build%20System-Make-blue.svg)](https://www.gnu.org/software/make/)
-[![Database: SQLite](https://img.shields.io/badge/Database-SQLite-336791.svg)](https://www.sqlite.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/dunamismax/python-workspace/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/dunamismax/python-workspace/pulls)
 [![GitHub Stars](https://img.shields.io/github/stars/dunamismax/python-workspace?style=social)](https://github.com/dunamismax/python-workspace/stargazers)
 
 ---
 
-## Introduction
+## Overview
 
-This monorepo serves as a centralized hub for various C applications and shared libraries. Each project within this repository is designed to be independent and self-contained, ensuring maximum isolation and flexibility for deployment, while benefiting from a unified development environment and shared tooling. This structure promotes code reusability, consistent practices, and simplified dependency management across diverse C projects.
+This monorepo serves as a centralized hub for various C applications and shared libraries, promoting code reusability, consistent practices, and simplified dependency management across diverse C projects.
 
 ---
 
 ## Repository Structure
-
-The repository is organized to support a scalable and maintainable monorepo architecture. Below is a detailed look at the directory structure.
 
 <details>
 <summary><strong>Click to expand repository layout</strong></summary>
 
 ```sh
 c-repo/
-├── apps/                         # Directory for independent C applications
-│   ├── calculator/               # A command-line calculator
-│   │   ├── src/
-│   │   │   └── main.c
-│   │   └── Makefile
-│   ├── file-analyzer/            # A text file analyzer
-│   │   ├── src/
-│   │   │   └── main.c
-│   │   └── Makefile
-│   ├── contact-book/             # A command-line contact management system
-│   │   ├── src/
-│   │   │   └── main.c
-│   │   └── Makefile
-│   └── tiny-server/              # A simple HTTP web server
-│       ├── src/
-│       │   └── main.c
-│       └── Makefile
+├── apps/                         # Independent C applications
+│   ├── calculator/               # Command-line calculator
+│   ├── contact-book/             # Command-line contact management system
+│   ├── file-analyzer/            # Text file analyzer
+│   └── tiny-server/              # Simple HTTP web server
 │
-├── libs/                         # Directory for shared libraries and packages
-│   ├── math_lib/                 # Library for basic mathematical operations
-│   │   ├── src/
-│   │   │   └── math_lib.c
-│   │   ├── include/
-│   │   │   └── math_lib.h
-│   │   └── Makefile
-│   └── net_lib/                  # Library for networking operations
-│       ├── src/
-│       │   └── net_lib.c
-│       ├── include/
-│       │   └── net_lib.h
-│       └── Makefile
+├── libs/                         # Shared libraries
+│   ├── math_lib/                 # Basic mathematical operations
+│   └── net_lib/                  # Networking operations
 │
-├── core/                         # Fundamental code central to many projects
-│   ├── src/
-│   │   ├── utils.c               # Utility functions (e.g., prime checking)
-│   │   └── data_structures.c     # Common data structures (e.g., linked list)
-│   └── include/
-│       ├── utils.h
-│       └── data_structures.h
-│   └── Makefile
+├── core/                         # Fundamental code (data structures, utilities)
 │
-├── tests/                        # Dedicated place for all test files
-│   ├── libs/
-│   │   └── test_my_lib.c         # Test for math_lib
-│   │   └── Makefile
-│   └── core/
-│       └── test_core.c           # Test for core utilities and data structures
-│       └── Makefile
+├── tests/                        # Test files for libraries and core components
+│   ├── core/
+│   └── libs/
 │
-├── build/                        # Stores compiled output (object files, executables, libraries)
-│   ├── bin/                      # Compiled application binaries
-│   ├── lib/                      # Compiled static libraries
-│   ├── obj/                      # Intermediate object files
-│   └── test/                     # Compiled test executables
-├── docs/                         # Documentation, notes, etc.
-│   └── .gitkeep
-├── tools/                        # Helper scripts or development tools
-│   └── build_all.sh              # Script to build and test the entire monorepo
-├── .gitignore                    # Git ignore file
-├── LICENSE                       # Project license
-├── README.md                     # Monorepo root README
-└── python-workspace-image.png    # Placeholder image for the README
+├── build/                        # Compiled output (binaries, libraries, objects)
+├── docs/                         # Documentation
+├── tools/                        # Helper scripts (e.g., build_all.sh)
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
 </details>
@@ -98,249 +55,78 @@ c-repo/
 
 ## Quick Start
 
-Get up and running with the monorepo:
+To get started, clone the repository and run the build script:
 
 ```bash
-# Clone the repository
 git clone https://github.com/dunamismax/c-repo.git
 cd c-repo
-
-# Build and test the entire monorepo
 ./tools/build_all.sh
-
-# Alternatively, build components individually:
-# Build all libraries
-make -C libs/math_lib
-make -C libs/net_lib
-make -C core
-
-# Build all applications
-make -C apps/calculator
-make -C apps/file-analyzer
-make -C apps/contact-book
-make -C apps/tiny-server
-
-# Build all tests
-make -C tests/libs
-make -C tests/core
 ```
 
----
-
-## Getting Started
-
-### Prerequisites
-
-Ensure you have the following installed:
-
-- **GCC (GNU Compiler Collection)** - [Install GCC](https://gcc.gnu.org/install/)
-- **GNU Make** - [Install Make](https://www.gnu.org/software/make/manual/html_node/Installing-Make.html)
-- **Git** - [Download Git](https://git-scm.com/downloads)
-
-### Detailed Setup
-
-1.  **Clone the Repository**
-
-    ```bash
-    git clone https://github.com/dunamismax/c-repo.git
-    cd c-repo
-    ```
-
-2.  **Build Process**
-
-    The monorepo uses `Makefiles` for building. You can build the entire project using the `build_all.sh` script, or build components individually.
-
-    **Build All (Recommended):**
-
-    ```bash
-    ./tools/build_all.sh
-    ```
-
-    **Build Libraries Individually:**
-
-    ```bash
-    cd libs/math_lib
-    make
-    cd ../../libs/net_lib
-    make
-    cd ../../core
-    make
-    ```
-
-    **Build Applications Individually:**
-
-    ```bash
-    cd apps/calculator
-    make
-    cd ../../apps/file-analyzer
-    make
-    cd ../../apps/contact-book
-    make
-    cd ../../apps/tiny-server
-    make
-    ```
-
-    **Build Tests Individually:**
-
-    ```bash
-    cd tests/libs
-    make
-    cd ../../tests/core
-    make
-    ```
-
-3.  **Running Applications**
-
-    All compiled binaries are located in the `build/bin/` directory.
-
-    ### Calculator
-
-    ```bash
-    ./build/bin/calculator 10 + 5
-    ./build/bin/calculator 20 / 4
-    ```
-
-    ### File Analyzer
-
-    First, create a sample text file (e.g., `sample.txt`) in the project root directory:
-
-    ```bash
-    echo "Hello world!\nThis is a test file." > sample.txt
-    ```
-
-    Then run the analyzer:
-
-    ```bash
-    ./build/bin/file-analyzer sample.txt
-    ```
-
-    ### Contact Book
-
-    ```bash
-    # Add a new contact
-    ./build/bin/contact-book add "John Doe" "555-1234" "john.doe@email.com"
-
-    # List all contacts
-    ./build/bin/contact-book list
-
-    # Search for a contact
-    ./build/bin/contact-book find "John"
-    ```
-
-    ### Tiny Server
-
-    ```bash
-    # Run the server (it will listen on port 8080)
-    ./build/bin/tiny-server
-
-    # Then, in a web browser, you could navigate to:
-    # http://localhost:8080/
-    ```
+This script builds all libraries, applications, and runs all tests.
 
 ---
 
 ## Projects Overview
 
-This monorepo hosts several independent C applications, each demonstrating different functionalities and leveraging shared libraries.
+This monorepo hosts several independent C applications, each demonstrating different functionalities and leveraging shared libraries. Recent improvements include:
 
-### [Calculator](apps/calculator) - Command-Line Calculator
+### [Calculator](apps/calculator)
 
-A simple command-line calculator application that performs basic arithmetic operations (addition, subtraction, multiplication, division). It demonstrates the use of the `libs/math_lib` for mathematical functions.
+Enhanced with robust floating-point input validation and division-by-zero prevention.
 
-**Example Usage:**
-`./build/bin/calculator <num1> <operator> <num2>` (e.g., `./build/bin/calculator 10 + 5`)
+### [File Analyzer](apps/file-analyzer)
 
-### [File Analyzer](apps/file-analyzer) - Text File Analysis Tool
+Refactored for better modularity, dynamic word buffering, and improved tokenization.
 
-A utility that analyzes a given text file, providing statistics such as character count, word count, and line count. It also demonstrates the usage of `core/utils` for prime number checking and `core/data_structures` for linked list operations.
+### [Contact Book](apps/contact-book)
 
-**Example Usage:**
-`./build/bin/file-analyzer <filename>` (e.g., `./build/bin/file-analyzer sample.txt`)
+Now includes a `delete` command, improved user feedback, and refactored main function.
 
-### [Contact Book](apps/contact-book) - Command-Line Contact Management System
+### [Tiny Server](apps/tiny-server)
 
-A command-line interface (CLI) application for managing contacts. Users can add, list, search for, and delete contacts, which are persisted to a CSV file. It leverages the `core/data_structures` for in-memory contact management.
+Features graceful shutdown, concurrent connection handling, and basic HTTP request logging.
 
-**Example Usage:**
-`./build/bin/contact-book add "John Doe" "555-1234" "john.doe@email.com"`
-`./build/bin/contact-book list`
-`./build/bin/contact-book find "John"`
+---
 
-### [Tiny Server](apps/tiny-server) - A Simple HTTP Web Server
+## Core & Libraries Enhancements
 
-A basic web server that listens for incoming TCP connections on a specified port (default 8080) and serves a simple "Hello, World!" response. It demonstrates fundamental networking concepts and utilizes the new `libs/net_lib` for socket operations.
+### `core/data_structures`
 
-**Example Usage:**
-`./build/bin/tiny-server` (then access via `http://localhost:8080/` in a browser)
+Refactored to a more robust `LinkedList` API with functions for creation, destruction, appending, prepending, getting, and removing nodes.
+
+### `libs/net_lib`
+
+Modularized socket operations into `socket_create`, `socket_bind`, and `socket_listen` for greater flexibility.
+
+---
+
+## Testing
+
+The test suite has been expanded to include comprehensive tests for the new `LinkedList` API (`test_core.c`) and dedicated tests for the `net_lib` functions (`test_net_lib.c`).
 
 ---
 
 ## Development Workflow
 
-### Daily Development
+Modify `.c` and `.h` files as needed, then rebuild and test:
 
-1.  **Build Components**
+```bash
+# Rebuild and test the entire monorepo
+./tools/build_all.sh
 
-    When making changes, rebuild the specific library or application:
-
-    ```bash
-    # Example: Rebuild math_lib
-    cd libs/math_lib
-    make
-    # Example: Rebuild calculator (after math_lib changes)
-    cd ../../apps/calculator
-    make
-    ```
-
-2.  **Run Applications**
-
-    Execute the compiled binaries from their respective directories, or from `build/bin/`.
-
-### Making Changes
-
-1.  **Update Source Files**
-
-    Modify `.c` and `.h` files as needed.
-
-2.  **Rebuild**
-
-    Run `make` in the relevant directory to recompile, or run `./tools/build_all.sh` to rebuild the entire project.
-
-3.  **Testing**
-
-    Run tests for all components:
-
-    ```bash
-    ./tools/build_all.sh # This also runs tests
-    ```
-
-    Or run tests for a specific component:
-
-    ```bash
-    ./build/test/test_my_lib
-    ./build/test/test_core
-    ```
-
----
-
-## Scripts & Automation
-
-The monorepo includes several automation scripts to streamline development:
-
--   **`Makefile`** - Each component (libraries, applications, tests) has its own `Makefile` for building and cleaning.
--   **`tools/build_all.sh`** - A convenience script to build all libraries, applications, and run all tests in the correct order.
+# Or, build and test specific components (e.g., after changes in math_lib)
+cd libs/math_lib && make
+cd ../../apps/calculator && make
+cd ../../tests/libs && make
+./build/test/test_my_lib
+```
 
 ---
 
 ## Contributing
 
-Contributions are welcome! Please feel free to fork the repository, create a feature branch, and open a pull request. For major changes, please open an issue first to discuss what you would like to change.
-
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+Contributions are welcome! Please feel free to fork the repository, create a feature branch, and open a pull request.
 
 ---
 
