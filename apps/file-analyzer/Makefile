@@ -1,16 +1,33 @@
 CC = gcc
 CFLAGS = -I../../core/include -Wall -Wextra -std=c99
-LDFLAGS = -L../../core -lcore
+
+BUILD_DIR = ../../build
+OBJ_DIR = $(BUILD_DIR)/obj/file-analyzer
+BIN_DIR = $(BUILD_DIR)/bin
+LIB_DIR = $(BUILD_DIR)/lib
 
 SRCS = src/main.c
-TARGET = file-analyzer
+OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
+
+TARGET = $(BIN_DIR)/file-analyzer
 
 .PHONY: all clean
 
 all: $(TARGET)
 
-$(TARGET): $(SRCS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS) $(LDFLAGS)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+$(TARGET): $(OBJS) $(BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ $^ -L$(LIB_DIR) -lcore
+
+$(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(OBJS) $(TARGET)
+	rmdir $(OBJ_DIR) 2>/dev/null || true
+	rmdir $(BIN_DIR) 2>/dev/null || true

@@ -77,8 +77,11 @@ c-repo/
 │       └── test_core.c           # Test for core utilities and data structures
 │       └── Makefile
 │
-├── build/                        # Stores compiled output (object files, executables)
-│   └── .gitkeep
+├── build/                        # Stores compiled output (object files, executables, libraries)
+│   ├── bin/                      # Compiled application binaries
+│   ├── lib/                      # Compiled static libraries
+│   ├── obj/                      # Intermediate object files
+│   └── test/                     # Compiled test executables
 ├── docs/                         # Documentation, notes, etc.
 │   └── .gitkeep
 ├── tools/                        # Helper scripts or development tools
@@ -117,11 +120,9 @@ make -C apps/file-analyzer
 make -C apps/contact-book
 make -C apps/tiny-server
 
-# Run tests
+# Build all tests
 make -C tests/libs
-./tests/libs/test_my_lib
 make -C tests/core
-./tests/core/test_core
 ```
 
 ---
@@ -179,51 +180,58 @@ Ensure you have the following installed:
     make
     ```
 
+    **Build Tests Individually:**
+
+    ```bash
+    cd tests/libs
+    make
+    cd ../../tests/core
+    make
+    ```
+
 3.  **Running Applications**
+
+    All compiled binaries are located in the `build/bin/` directory.
 
     ### Calculator
 
     ```bash
-    cd apps/calculator
-    ./calculator 10 + 5
-    ./calculator 20 / 4
+    ./build/bin/calculator 10 + 5
+    ./build/bin/calculator 20 / 4
     ```
 
     ### File Analyzer
 
-    First, create a sample text file (e.g., `sample.txt`) in the `apps/file-analyzer` directory:
+    First, create a sample text file (e.g., `sample.txt`) in the project root directory:
 
     ```bash
-    echo "Hello world!\nThis is a test file." > apps/file-analyzer/sample.txt
+    echo "Hello world!\nThis is a test file." > sample.txt
     ```
 
     Then run the analyzer:
 
     ```bash
-    cd apps/file-analyzer
-    ./file-analyzer sample.txt
+    ./build/bin/file-analyzer sample.txt
     ```
 
     ### Contact Book
 
     ```bash
     # Add a new contact
-    cd apps/contact-book
-    ./contact-book add "John Doe" "555-1234" "john.doe@email.com"
+    ./build/bin/contact-book add "John Doe" "555-1234" "john.doe@email.com"
 
     # List all contacts
-    ./contact-book list
+    ./build/bin/contact-book list
 
     # Search for a contact
-    ./contact-book find "John"
+    ./build/bin/contact-book find "John"
     ```
 
     ### Tiny Server
 
     ```bash
     # Run the server (it will listen on port 8080)
-    cd apps/tiny-server
-    ./tiny-server
+    ./build/bin/tiny-server
 
     # Then, in a web browser, you could navigate to:
     # http://localhost:8080/
@@ -240,30 +248,30 @@ This monorepo hosts several independent C applications, each demonstrating diffe
 A simple command-line calculator application that performs basic arithmetic operations (addition, subtraction, multiplication, division). It demonstrates the use of the `libs/math_lib` for mathematical functions.
 
 **Example Usage:**
-`./calculator <num1> <operator> <num2>` (e.g., `./calculator 10 + 5`)
+`./build/bin/calculator <num1> <operator> <num2>` (e.g., `./build/bin/calculator 10 + 5`)
 
 ### [File Analyzer](apps/file-analyzer) - Text File Analysis Tool
 
 A utility that analyzes a given text file, providing statistics such as character count, word count, and line count. It also demonstrates the usage of `core/utils` for prime number checking and `core/data_structures` for linked list operations.
 
 **Example Usage:**
-`./file-analyzer <filename>` (e.g., `./file-analyzer sample.txt`)
+`./build/bin/file-analyzer <filename>` (e.g., `./build/bin/file-analyzer sample.txt`)
 
 ### [Contact Book](apps/contact-book) - Command-Line Contact Management System
 
 A command-line interface (CLI) application for managing contacts. Users can add, list, search for, and delete contacts, which are persisted to a CSV file. It leverages the `core/data_structures` for in-memory contact management.
 
 **Example Usage:**
-`./contact-book add "John Doe" "555-1234" "john.doe@email.com"`
-`./contact-book list`
-`./contact-book find "John"`
+`./build/bin/contact-book add "John Doe" "555-1234" "john.doe@email.com"`
+`./build/bin/contact-book list`
+`./build/bin/contact-book find "John"`
 
 ### [Tiny Server](apps/tiny-server) - A Simple HTTP Web Server
 
 A basic web server that listens for incoming TCP connections on a specified port (default 8080) and serves a simple "Hello, World!" response. It demonstrates fundamental networking concepts and utilizes the new `libs/net_lib` for socket operations.
 
 **Example Usage:**
-`./tiny-server` (then access via `http://localhost:8080/` in a browser)
+`./build/bin/tiny-server` (then access via `http://localhost:8080/` in a browser)
 
 ---
 
@@ -286,7 +294,7 @@ A basic web server that listens for incoming TCP connections on a specified port
 
 2.  **Run Applications**
 
-    Execute the compiled binaries from their respective directories.
+    Execute the compiled binaries from their respective directories, or from `build/bin/`.
 
 ### Making Changes
 
@@ -309,9 +317,8 @@ A basic web server that listens for incoming TCP connections on a specified port
     Or run tests for a specific component:
 
     ```bash
-    cd tests/libs
-    make
-    ./test_my_lib
+    ./build/test/test_my_lib
+    ./build/test/test_core
     ```
 
 ---
