@@ -21,7 +21,7 @@ $(LIB_DIR):
 	mkdir -p $(LIB_DIR)
 
 $(TARGET): $(OBJS) $(LIB_DIR)
-	ar rcs $@ $^
+	ar rcs $@ $(OBJS)
 
 $(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@

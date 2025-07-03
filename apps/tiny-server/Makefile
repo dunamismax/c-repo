@@ -22,7 +22,7 @@ $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
 $(TARGET): $(OBJS) $(BIN_DIR)
-	$(CC) $(CFLAGS) -o $@ $^ -L$(LIB_DIR) -lnet
+	$(CC) $(CFLAGS) -o $@ $(OBJS) -L$(LIB_DIR) -lnet
 
 $(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@

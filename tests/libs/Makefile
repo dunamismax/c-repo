@@ -22,7 +22,7 @@ $(TEST_DIR):
 	mkdir -p $(TEST_DIR)
 
 $(TARGET): $(OBJS) $(TEST_DIR)
-	$(CC) $(CFLAGS) -o $@ $^ -L$(LIB_DIR) -lmath
+	$(CC) $(CFLAGS) -o $@ $(OBJS) -L$(LIB_DIR) -lmath
 
 $(OBJ_DIR)/%.o: %.c $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
