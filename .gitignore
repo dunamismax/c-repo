@@ -1,6 +1,9 @@
 # Binaries and executables
 *.o
 *.a
+*.so
+*.dll
+*.exe
 *.out
 
 # Build directories
@@ -8,16 +11,71 @@ build/
 apps/*/build/
 libs/*/build/
 
+# Dependency directories
+node_modules/
+vendor/
+
+# Compiled/Transpiled files
+*.class
+*.pyc
+*.swp
+*.bak
+*.tmp
+*.log
+
 # Editor/IDE specific files
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
+*.DS_Store
+Thumbs.db
 
 # Operating System files
 .DS_Store
 Thumbs.db
+.localized
+.Trashes
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
 
-# Dependencies
-node_modules/
+# Package managers
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Test and coverage reports
+/coverage
+/.nyc_output
+
+# Docker
+Dockerfile.bak
+*.dockerignore
+
+# Web development specific
+/dist
+/out
+/.next
+
+# Miscellaneous
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.patch
+*.diff
+
+# Security related (if generated locally and not meant for commit)
+*.key
+*.pem
+*.crt
+*.csr
