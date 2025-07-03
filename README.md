@@ -6,9 +6,9 @@ Welcome to my C Monorepo. This repository centralizes diverse C applications and
 
 [![Language: C](https://img.shields.io/badge/Language-C-A8B9CC.svg)](<https://en.wikipedia.org/wiki/C_(programming_language)>)
 [![Build System: Make](https://img.shields.io/badge/Build%20System-Make-blue.svg)](https://www.gnu.org/software/make/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/dunamismax/python-workspace/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/dunamismax/c-repo/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/dunamismax/python-workspace/pulls)
-[![GitHub Stars](https://img.shields.io/github/stars/dunamismax/python-workspace?style=social)](https://github.com/dunamismax/python-workspace/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/dunamismax/c-repo?style=social)](https://github.com/dunamismax/python-workspace/stargazers)
 
 ---
 
@@ -46,7 +46,7 @@ c-repo/
 ├── tools/                        # Helper scripts (e.g., build_all.sh)
 ├── .gitignore
 ├── LICENSE
-└── README.md
+└── c-repo-image.png    # Placeholder image for the README
 ```
 
 </details>
