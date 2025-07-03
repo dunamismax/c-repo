@@ -6,9 +6,11 @@
  * @brief Creates and initializes a new LinkedList.
  * @return A pointer to the newly created LinkedList, or NULL on failure.
  */
-LinkedList* list_create() {
-    LinkedList* list = (LinkedList*)calloc(1, sizeof(LinkedList));
-    if (list == NULL) {
+LinkedList *list_create()
+{
+    LinkedList *list = (LinkedList *)calloc(1, sizeof(LinkedList));
+    if (list == NULL)
+    {
         perror("Failed to create LinkedList");
     }
     return list;
@@ -19,13 +21,17 @@ LinkedList* list_create() {
  * @param list The LinkedList to destroy.
  * @param free_func A function to free the data in each node.
  */
-void list_destroy(LinkedList* list, free_data_func free_func) {
-    if (list == NULL) return;
-    Node* current = list->head;
-    Node* next_node;
-    while (current != NULL) {
+void list_destroy(LinkedList *list, free_data_func free_func)
+{
+    if (list == NULL)
+        return;
+    Node *current = list->head;
+    Node *next_node;
+    while (current != NULL)
+    {
         next_node = current->next;
-        if (free_func != NULL) {
+        if (free_func != NULL)
+        {
             free_func(current->data);
         }
         free(current);
@@ -40,20 +46,27 @@ void list_destroy(LinkedList* list, free_data_func free_func) {
  * @param data The data to append.
  * @return 0 on success, -1 on failure.
  */
-int list_append(LinkedList* list, void* data) {
-    if (list == NULL) return -1;
-    Node* new_node = (Node*)calloc(1, sizeof(Node));
-    if (new_node == NULL) {
+int list_append(LinkedList *list, void *data)
+{
+    if (list == NULL)
+        return -1;
+    Node *new_node = (Node *)calloc(1, sizeof(Node));
+    if (new_node == NULL)
+    {
         perror("Failed to create new node");
         return -1;
     }
     new_node->data = data;
 
-    if (list->head == NULL) {
+    if (list->head == NULL)
+    {
         list->head = new_node;
-    } else {
-        Node* last = list->head;
-        while (last->next != NULL) {
+    }
+    else
+    {
+        Node *last = list->head;
+        while (last->next != NULL)
+        {
             last = last->next;
         }
         last->next = new_node;
@@ -68,10 +81,13 @@ int list_append(LinkedList* list, void* data) {
  * @param data The data to prepend.
  * @return 0 on success, -1 on failure.
  */
-int list_prepend(LinkedList* list, void* data) {
-    if (list == NULL) return -1;
-    Node* new_node = (Node*)calloc(1, sizeof(Node));
-    if (new_node == NULL) {
+int list_prepend(LinkedList *list, void *data)
+{
+    if (list == NULL)
+        return -1;
+    Node *new_node = (Node *)calloc(1, sizeof(Node));
+    if (new_node == NULL)
+    {
         perror("Failed to create new node");
         return -1;
     }
@@ -88,12 +104,15 @@ int list_prepend(LinkedList* list, void* data) {
  * @param index The index of the node.
  * @return A pointer to the data, or NULL if the index is out of bounds.
  */
-void* list_get(LinkedList* list, size_t index) {
-    if (list == NULL || index >= list->size) {
+void *list_get(LinkedList *list, size_t index)
+{
+    if (list == NULL || index >= list->size)
+    {
         return NULL;
     }
-    Node* current = list->head;
-    for (size_t i = 0; i < index; i++) {
+    Node *current = list->head;
+    for (size_t i = 0; i < index; i++)
+    {
         current = current->next;
     }
     return current->data;
@@ -106,25 +125,32 @@ void* list_get(LinkedList* list, size_t index) {
  * @param free_func A function to free the data in the removed node.
  * @return 0 on success, -1 if the index is out of bounds.
  */
-int list_remove(LinkedList* list, size_t index, free_data_func free_func) {
-    if (list == NULL || index >= list->size) {
+int list_remove(LinkedList *list, size_t index, free_data_func free_func)
+{
+    if (list == NULL || index >= list->size)
+    {
         return -1;
     }
 
-    Node* to_delete = NULL;
-    if (index == 0) {
+    Node *to_delete = NULL;
+    if (index == 0)
+    {
         to_delete = list->head;
         list->head = list->head->next;
-    } else {
-        Node* current = list->head;
-        for (size_t i = 0; i < index - 1; i++) {
+    }
+    else
+    {
+        Node *current = list->head;
+        for (size_t i = 0; i < index - 1; i++)
+        {
             current = current->next;
         }
         to_delete = current->next;
         current->next = to_delete->next;
     }
 
-    if (free_func != NULL) {
+    if (free_func != NULL)
+    {
         free_func(to_delete->data);
     }
     free(to_delete);
