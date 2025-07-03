@@ -1,20 +1,20 @@
 CC = gcc
-AR = ar
+CFLAGS = -Iinclude -Wall -Wextra -std=c99
+
+SRCS = src/data_structures.c src/utils.c
+OBJS = $(SRCS:.c=.o)
 
 TARGET = libcore.a
-SRCS = src/utils.c src/data_structures.c
-OBJS = $(SRCS:.c=.o)
-INCLUDES = -Iinclude
 
 .PHONY: all clean
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(AR) rcs $@ $^
+	ar rcs $@ $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)

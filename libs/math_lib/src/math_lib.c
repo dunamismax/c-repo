@@ -1,20 +1,21 @@
-#include "math_lib.h"
+#include "../include/math_lib.h"
 
-int add(int a, int b) {
+// Function to add two numbers
+double add(double a, double b) {
     return a + b;
 }
 
-int subtract(int a, int b) {
+// Function to subtract two numbers
+double subtract(double a, double b) {
     return a - b;
 }
 
-int multiply(int a, int b) {
+// Function to multiply two numbers
+double multiply(double a, double b) {
     return a * b;
 }
 
-double divide(int a, int b) {
-    if (b == 0) {
-        return 0.0; // Handle division by zero
-    }
-    return (double)a / b;
+// Function to divide two numbers
+double divide(double a, double b) {
+    return a / b;
 }

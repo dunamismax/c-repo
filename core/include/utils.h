@@ -1,8 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <stdbool.h>
+// Function prototype for the prime number checker
+int is_prime(int n);
 
-bool is_prime(int num);
-
-#endif // UTILS_H
+#endif /* UTILS_H */

@@ -33,7 +33,15 @@ c-repo/
 │   │   ├── src/
 │   │   │   └── main.c
 │   │   └── Makefile
-│   └── file-analyzer/            # A text file analyzer
+│   ├── file-analyzer/            # A text file analyzer
+│   │   ├── src/
+│   │   │   └── main.c
+│   │   └── Makefile
+│   ├── contact-book/             # A command-line contact management system
+│   │   ├── src/
+│   │   │   └── main.c
+│   │   └── Makefile
+│   └── tiny-server/              # A simple HTTP web server
 │       ├── src/
 │       │   └── main.c
 │       └── Makefile
@@ -45,6 +53,12 @@ c-repo/
 │   │   ├── include/
 │   │   │   └── math_lib.h
 │   │   └── Makefile
+│   └── net_lib/                  # Library for networking operations
+│       ├── src/
+│       │   └── net_lib.c
+│       ├── include/
+│       │   └── net_lib.h
+│       └── Makefile
 │
 ├── core/                         # Fundamental code central to many projects
 │   ├── src/
@@ -60,7 +74,7 @@ c-repo/
 │   │   └── test_my_lib.c         # Test for math_lib
 │   │   └── Makefile
 │   └── core/
-│       └── test_utils.c          # Test for core utilities and data structures
+│       └── test_core.c           # Test for core utilities and data structures
 │       └── Makefile
 │
 ├── build/                        # Stores compiled output (object files, executables)
@@ -68,7 +82,7 @@ c-repo/
 ├── docs/                         # Documentation, notes, etc.
 │   └── .gitkeep
 ├── tools/                        # Helper scripts or development tools
-│   └── .gitkeep
+│   └── build_all.sh              # Script to build and test the entire monorepo
 ├── .gitignore                    # Git ignore file
 ├── LICENSE                       # Project license
 ├── README.md                     # Monorepo root README
@@ -88,13 +102,20 @@ Get up and running with the monorepo:
 git clone https://github.com/dunamismax/c-repo.git
 cd c-repo
 
+# Build and test the entire monorepo
+./tools/build_all.sh
+
+# Alternatively, build components individually:
 # Build all libraries
 make -C libs/math_lib
+make -C libs/net_lib
 make -C core
 
 # Build all applications
 make -C apps/calculator
 make -C apps/file-analyzer
+make -C apps/contact-book
+make -C apps/tiny-server
 
 # Run tests
 make -C tests/libs
@@ -117,59 +138,96 @@ Ensure you have the following installed:
 
 ### Detailed Setup
 
-1. **Clone the Repository**
+1.  **Clone the Repository**
 
-   ```bash
-   git clone https://github.com/dunamismax/c-repo.git
-   cd c-repo
-   ```
+    ```bash
+    git clone https://github.com/dunamismax/c-repo.git
+    cd c-repo
+    ```
 
-2. **Build Process**
+2.  **Build Process**
 
-   The monorepo uses `Makefiles` for building. You need to build libraries before applications.
+    The monorepo uses `Makefiles` for building. You can build the entire project using the `build_all.sh` script, or build components individually.
 
-   **Build Libraries:**
+    **Build All (Recommended):**
 
-   ```bash
-   cd libs/math_lib
-   make
-   cd ../../core
-   make
-   ```
+    ```bash
+    ./tools/build_all.sh
+    ```
 
-   **Build Applications:**
+    **Build Libraries Individually:**
 
-   ```bash
-   cd apps/calculator
-   make
-   cd ../../apps/file-analyzer
-   make
-   ```
+    ```bash
+    cd libs/math_lib
+    make
+    cd ../../libs/net_lib
+    make
+    cd ../../core
+    make
+    ```
 
-3. **Running Applications**
+    **Build Applications Individually:**
 
-   ### Calculator
+    ```bash
+    cd apps/calculator
+    make
+    cd ../../apps/file-analyzer
+    make
+    cd ../../apps/contact-book
+    make
+    cd ../../apps/tiny-server
+    make
+    ```
 
-   ```bash
-   cd apps/calculator
-   ./calculator 10 + 5
-   ./calculator 20 / 4
-   ```
+3.  **Running Applications**
 
-   ### File Analyzer
+    ### Calculator
 
-   First, create a sample text file (e.g., `sample.txt`) in the `apps/file-analyzer` directory:
+    ```bash
+    cd apps/calculator
+    ./calculator 10 + 5
+    ./calculator 20 / 4
+    ```
 
-   ```bash
-   echo "Hello world!\nThis is a test file." > apps/file-analyzer/sample.txt
-   ```
+    ### File Analyzer
 
-   Then run the analyzer:
+    First, create a sample text file (e.g., `sample.txt`) in the `apps/file-analyzer` directory:
 
-   ```bash
-   cd apps/file-analyzer
-   ./file-analyzer sample.txt
-   ```
+    ```bash
+    echo "Hello world!\nThis is a test file." > apps/file-analyzer/sample.txt
+    ```
+
+    Then run the analyzer:
+
+    ```bash
+    cd apps/file-analyzer
+    ./file-analyzer sample.txt
+    ```
+
+    ### Contact Book
+
+    ```bash
+    # Add a new contact
+    cd apps/contact-book
+    ./contact-book add "John Doe" "555-1234" "john.doe@email.com"
+
+    # List all contacts
+    ./contact-book list
+
+    # Search for a contact
+    ./contact-book find "John"
+    ```
+
+    ### Tiny Server
+
+    ```bash
+    # Run the server (it will listen on port 8080)
+    cd apps/tiny-server
+    ./tiny-server
+
+    # Then, in a web browser, you could navigate to:
+    # http://localhost:8080/
+    ```
 
 ---
 
@@ -191,57 +249,70 @@ A utility that analyzes a given text file, providing statistics such as characte
 **Example Usage:**
 `./file-analyzer <filename>` (e.g., `./file-analyzer sample.txt`)
 
+### [Contact Book](apps/contact-book) - Command-Line Contact Management System
+
+A command-line interface (CLI) application for managing contacts. Users can add, list, search for, and delete contacts, which are persisted to a CSV file. It leverages the `core/data_structures` for in-memory contact management.
+
+**Example Usage:**
+`./contact-book add "John Doe" "555-1234" "john.doe@email.com"`
+`./contact-book list`
+`./contact-book find "John"`
+
+### [Tiny Server](apps/tiny-server) - A Simple HTTP Web Server
+
+A basic web server that listens for incoming TCP connections on a specified port (default 8080) and serves a simple "Hello, World!" response. It demonstrates fundamental networking concepts and utilizes the new `libs/net_lib` for socket operations.
+
+**Example Usage:**
+`./tiny-server` (then access via `http://localhost:8080/` in a browser)
+
 ---
 
 ## Development Workflow
 
 ### Daily Development
 
-1. **Build Components**
+1.  **Build Components**
 
-   When making changes, rebuild the specific library or application:
+    When making changes, rebuild the specific library or application:
 
-   ```bash
-   # Example: Rebuild math_lib
-   cd libs/math_lib
-   make
-   # Example: Rebuild calculator (after math_lib changes)
-   cd ../../apps/calculator
-   make
-   ```
+    ```bash
+    # Example: Rebuild math_lib
+    cd libs/math_lib
+    make
+    # Example: Rebuild calculator (after math_lib changes)
+    cd ../../apps/calculator
+    make
+    ```
 
-2. **Run Applications**
+2.  **Run Applications**
 
-   Execute the compiled binaries from their respective directories.
+    Execute the compiled binaries from their respective directories.
 
 ### Making Changes
 
-1. **Update Source Files**
+1.  **Update Source Files**
 
-   Modify `.c` and `.h` files as needed.
+    Modify `.c` and `.h` files as needed.
 
-2. **Rebuild**
+2.  **Rebuild**
 
-   Run `make` in the relevant directory to recompile.
+    Run `make` in the relevant directory to recompile, or run `./tools/build_all.sh` to rebuild the entire project.
 
-3. **Testing**
+3.  **Testing**
 
-   Run tests for all components:
+    Run tests for all components:
 
-   ```bash
-   make -C tests/libs
-   ./tests/libs/test_my_lib
-   make -C tests/core
-   ./tests/core/test_core
-   ```
+    ```bash
+    ./tools/build_all.sh # This also runs tests
+    ```
 
-   Or run tests for a specific component:
+    Or run tests for a specific component:
 
-   ```bash
-   cd tests/libs
-   make
-   ./test_my_lib
-   ```
+    ```bash
+    cd tests/libs
+    make
+    ./test_my_lib
+    ```
 
 ---
 
@@ -249,9 +320,8 @@ A utility that analyzes a given text file, providing statistics such as characte
 
 The monorepo includes several automation scripts to streamline development:
 
-### Build & Test
-
-- **`Makefile`** - Each component (libraries, applications, tests) has its own `Makefile` for building and cleaning.
+-   **`Makefile`** - Each component (libraries, applications, tests) has its own `Makefile` for building and cleaning.
+-   **`tools/build_all.sh`** - A convenience script to build all libraries, applications, and run all tests in the correct order.
 
 ---
 
@@ -259,11 +329,11 @@ The monorepo includes several automation scripts to streamline development:
 
 Contributions are welcome! Please feel free to fork the repository, create a feature branch, and open a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
 ---
 
@@ -271,11 +341,11 @@ Contributions are welcome! Please feel free to fork the repository, create a fea
 
 Connect with the author, **dunamismax**, on:
 
-- **Twitter:** [@dunamismax](https://twitter.com/dunamismax)
-- **Bluesky:** [@dunamismax.bsky.social](https://bsky.app/profile/dunamismax.bsky.social)
-- **Reddit:** [u/dunamismax](https://www.reddit.com/user/dunamismax)
-- **Discord:** `dunamismax`
-- **Signal:** `dunamismax.66`
+-   **Twitter:** [@dunamismax](https://twitter.com/dunamismax)
+-   **Bluesky:** [@dunamismax.bsky.social](https://bsky.app/profile/dunamismax.bsky.social)
+-   **Reddit:** [u/dunamismax](https://www.reddit.com/user/dunamismax)
+-   **Discord:** `dunamismax`
+-   **Signal:** `dunamismax.66`
 
 ---
 

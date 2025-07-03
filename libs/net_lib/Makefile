@@ -1,10 +1,10 @@
 CC = gcc
 CFLAGS = -Iinclude -Wall -Wextra -std=c99
 
-SRCS = src/math_lib.c
+SRCS = src/net_lib.c
 OBJS = $(SRCS:.c=.o)
 
-TARGET = libmath.a
+TARGET = libnet.a
 
 .PHONY: all clean
 

@@ -1,30 +1,39 @@
-#include "data_structures.h"
-#include <stdio.h>
+#include "../include/data_structures.h"
 #include <stdlib.h>
 
-Node* create_node(int data) {
+// Function to create a new node with generic data
+Node* create_node(void* data) {
     Node* new_node = (Node*)malloc(sizeof(Node));
-    if (new_node == NULL) {
-        perror("Failed to allocate memory for node");
-        exit(EXIT_FAILURE);
+    if (new_node != NULL) {
+        new_node->data = data;
+        new_node->next = NULL;
     }
-    new_node->data = data;
-    new_node->next = NULL;
     return new_node;
 }
 
-void insert_at_beginning(Node** head, int data) {
+// Function to append a node to the end of the list
+void append_node(Node** head, void* data) {
     Node* new_node = create_node(data);
-    new_node->next = *head;
-    *head = new_node;
-}
-
-void print_list(Node* head) {
-    Node* current = head;
-    while (current != NULL) {
-        printf("%d -> ", current->data);
-        current = current->next;
+    if (*head == NULL) {
+        *head = new_node;
+        return;
     }
-    printf("NULL\n");
+    Node* last = *head;
+    while (last->next != NULL) {
+        last = last->next;
+    }
+    last->next = new_node;
 }
 
+// Function to free the entire list, including the data in each node
+void free_list(Node* head, free_data_func free_func) {
+    Node* tmp;
+    while (head != NULL) {
+        tmp = head;
+        head = head->next;
+        if (free_func != NULL) {
+            free_func(tmp->data); // Free the data using the provided function
+        }
+        free(tmp); // Free the node itself
+    }
+}

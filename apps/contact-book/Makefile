@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -I../../libs/math_lib/include -Wall -Wextra -std=c99
-LDFLAGS = -L../../libs/math_lib -lmath
+CFLAGS = -I../../core/include -Wall -Wextra -std=c99
+LDFLAGS = -L../../core -lcore
 
 SRCS = src/main.c
-TARGET = calculator
+TARGET = contact-book
 
 .PHONY: all clean
 

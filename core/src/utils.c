@@ -1,10 +1,10 @@
-#include "utils.h"
-#include <stdbool.h>
+#include "../include/utils.h"
 
-bool is_prime(int num) {
-    if (num <= 1) return false;
-    for (int i = 2; i * i <= num; i++) {
-        if (num % i == 0) return false;
+// Function to check if a number is prime
+int is_prime(int n) {
+    if (n <= 1) return 0;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) return 0;
     }
-    return true;
+    return 1;
 }

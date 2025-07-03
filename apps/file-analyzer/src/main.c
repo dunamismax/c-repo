@@ -1,8 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "utils.h"
-#include "data_structures.h"
+#include <ctype.h>
+#include "../../core/include/data_structures.h"
+#include "../../core/include/utils.h"
+
+#define MAX_WORD_LEN 100
+
+void free_string(void* data) {
+    free(data);
+}
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -16,57 +23,55 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int ch;
-    int char_count = 0;
-    int word_count = 0;
-    int line_count = 0;
-    bool in_word = false;
-
-    // Demonstrate core/utils.h
-    printf("Is 7 a prime number? %s\n", is_prime(7) ? "Yes" : "No");
-    printf("Is 10 a prime number? %s\n", is_prime(10) ? "Yes" : "No");
-
-    // Demonstrate core/data_structures.h
     Node* head = NULL;
-    insert_at_beginning(&head, 30);
-    insert_at_beginning(&head, 20);
-    insert_at_beginning(&head, 10);
-    printf("Linked List: ");
-    print_list(head);
+    char word[MAX_WORD_LEN];
+    int word_len = 0;
+    int char_count = 0;
+    int line_count = 1;
+    int word_count = 0;
 
-    // Analyze file content
-    while ((ch = fgetc(file)) != EOF) {
+    int c;
+    while ((c = fgetc(file)) != EOF) {
         char_count++;
-        if (ch == '\n') {
+        if (c == '\n') {
             line_count++;
         }
-        if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r') {
-            in_word = false;
-        } else if (!in_word) {
-            word_count++;
-            in_word = true;
+        if (isspace(c) || ispunct(c)) {
+            if (word_len > 0) {
+                word[word_len] = '\0';
+                char* new_word = strdup(word);
+                append_node(&head, new_word);
+                word_len = 0;
+                word_count++;
+            }
+        }
+ else {
+            if (word_len < MAX_WORD_LEN - 1) {
+                word[word_len++] = c;
+            }
         }
     }
 
-    // Adjust line count for files not ending with a newline
-    if (char_count > 0 && ch != '\n') {
-        line_count++;
+    if (word_len > 0) {
+        word[word_len] = '\0';
+        char* new_word = strdup(word);
+        append_node(&head, new_word);
+        word_count++;
     }
 
-    printf("\nFile Analysis for '%s':\n", argv[1]);
+    printf("File Analysis for '%s':\n", argv[1]);
     printf("Characters: %d\n", char_count);
     printf("Words: %d\n", word_count);
     printf("Lines: %d\n", line_count);
 
-    fclose(file);
-
-    // Free linked list memory
-    Node* current = head;
-    while (current != NULL) {
-        Node* next = current->next;
-        free(current);
-        current = next;
+    if (is_prime(word_count)) {
+        printf("The word count (%d) is a prime number.\n", word_count);
+    } else {
+        printf("The word count (%d) is not a prime number.\n", word_count);
     }
+
+    free_list(head, free_string);
+    fclose(file);
 
     return 0;
 }

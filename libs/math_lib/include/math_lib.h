@@ -1,9 +1,10 @@
 #ifndef MATH_LIB_H
 #define MATH_LIB_H
 
-int add(int a, int b);
-int subtract(int a, int b);
-int multiply(int a, int b);
-double divide(int a, int b);
+// Function prototypes for mathematical operations
+double add(double a, double b);
+double subtract(double a, double b);
+double multiply(double a, double b);
+double divide(double a, double b);
 
-#endif // MATH_LIB_H
+#endif /* MATH_LIB_H */
