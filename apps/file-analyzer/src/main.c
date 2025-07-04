@@ -84,7 +84,7 @@ void list_destroy(LinkedList *list, free_data_func free_func)
 
 /**
  * @brief Appends a new node with the given data to the end of the list.
- * @param list The LinkedList to append to. 
+ * @param list The LinkedList to append to.
  * @param data The data to append.
  * @return 0 on success, -1 on failure.
  */
@@ -294,7 +294,8 @@ LinkedList *process_file(FILE *file, FileStats *stats)
             char *new_word = strdup(token);
             if (new_word)
             {
-                if (list_append(word_list, new_word) != 0) {
+                if (list_append(word_list, new_word) != 0)
+                {
                     free(new_word);
                     list_destroy(word_list, free_string);
                     return NULL;
@@ -353,7 +354,8 @@ int main(int argc, char *argv[])
 
     LinkedList *word_list = process_file(file, &stats);
 
-    if (word_list) {
+    if (word_list)
+    {
         print_analysis(argv[1], &stats);
         list_destroy(word_list, free_string);
     }

@@ -267,7 +267,8 @@ void print_usage(const char *prog_name);
 void free_contact(void *data)
 {
     Contact *contact = (Contact *)data;
-    if (!contact) return;
+    if (!contact)
+        return;
     free(contact->name);
     free(contact->phone);
     free(contact->email);
@@ -342,7 +343,8 @@ void add_contact(LinkedList *list, const char *name, const char *phone, const ch
     contact->phone = strdup(phone);
     contact->email = strdup(email);
 
-    if (!contact->name || !contact->phone || !contact->email) {
+    if (!contact->name || !contact->phone || !contact->email)
+    {
         free_contact(contact);
         perror("Failed to allocate memory for contact details");
         return;
