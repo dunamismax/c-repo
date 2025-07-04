@@ -18,6 +18,7 @@ typedef struct Node
 typedef struct
 {
     Node *head;  /**< Pointer to the head of the list. */
+    Node *tail;  /**< Pointer to the tail of the list. */
     size_t size; /**< The number of elements in the list. */
 } LinkedList;
 

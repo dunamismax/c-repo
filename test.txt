@@ -1,0 +1,6 @@
+This is a test file. It contains words, numbers (123), and punctuation like, commas.
+And newlines!
+Let's see how the file-analyzer handles this; "with quotes".
+(And parentheses).
+Multiple spaces  and tabs	.
+Final line.

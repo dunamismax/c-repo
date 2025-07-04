@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../../core/include/data_structures.h"
+#include "../../core/include/utils.h"
 
 #define FILENAME "contacts.csv"
 #define MAX_LINE_LEN 256
@@ -126,7 +126,7 @@ void find_contact(LinkedList *list, const char *name)
     for (Node *current = list->head; current != NULL; current = current->next)
     {
         Contact *contact = (Contact *)current->data;
-        if (strcasestr(contact->name, name) != NULL)
+        if (str_case_str(contact->name, name) != NULL)
         {
             printf("  Name: %s, Phone: %s, Email: %s\n", contact->name, contact->phone, contact->email);
             found = 1;

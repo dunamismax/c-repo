@@ -1,33 +1,23 @@
-CC = gcc
-CFLAGS = -I../../core/include -Wall -Wextra -std=c99
+# file-analyzer app Makefile
+include ../../build/common.mk
 
-BUILD_DIR = ../../build
-OBJ_DIR = $(BUILD_DIR)/obj/file-analyzer
-BIN_DIR = $(BUILD_DIR)/bin
-LIB_DIR = $(BUILD_DIR)/lib
+# Override CFLAGS to include required library headers
+CFLAGS += -I$(ROOT_DIR)/core/include
 
+# Specifics for this target
 SRCS = src/main.c
-OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
-
-TARGET = $(BIN_DIR)/file-analyzer
-
-.PHONY: all clean
+OBJS = $(patsubst src/%.c,obj/file-analyzer/%.o,$(SRCS))
+TARGET = bin/file-analyzer
 
 all: $(TARGET)
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+$(TARGET): $(OBJS) $(LIB_DIR)/libcore.a
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) -o $@ $^
 
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
-
-$(TARGET): $(OBJS) $(BIN_DIR)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) -L$(LIB_DIR) -lcore
-
-$(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)
+obj/file-analyzer/%.o: src/%.c
+	mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)
-	rmdir $(OBJ_DIR) 2>/dev/null || true
-	rmdir $(BIN_DIR) 2>/dev/null || true

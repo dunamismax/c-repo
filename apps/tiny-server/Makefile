@@ -1,33 +1,23 @@
-CC = gcc
-CFLAGS = -I../../libs/net_lib/include -Wall -Wextra -std=c99
+# tiny-server app Makefile
+include ../../build/common.mk
 
-BUILD_DIR = ../../build
-OBJ_DIR = $(BUILD_DIR)/obj/tiny-server
-BIN_DIR = $(BUILD_DIR)/bin
-LIB_DIR = $(BUILD_DIR)/lib
+# Override CFLAGS to include required library headers
+CFLAGS += -I$(ROOT_DIR)/libs/net_lib/include
 
+# Specifics for this target
 SRCS = src/main.c
-OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
-
-TARGET = $(BIN_DIR)/tiny-server
-
-.PHONY: all clean
+OBJS = $(patsubst src/%.c,obj/tiny-server/%.o,$(SRCS))
+TARGET = bin/tiny-server
 
 all: $(TARGET)
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+$(TARGET): $(OBJS) $(LIB_DIR)/libnet.a
+	mkdir -p $(@D)
+	$(CC) $(CFLAGS) -o $@ $^ -lpthread
 
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
-
-$(TARGET): $(OBJS) $(BIN_DIR)
-	$(CC) $(CFLAGS) -o $@ $(OBJS) -L$(LIB_DIR) -lnet
-
-$(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)
+obj/tiny-server/%.o: src/%.c
+	mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)
-	rmdir $(OBJ_DIR) 2>/dev/null || true
-	rmdir $(BIN_DIR) 2>/dev/null || true

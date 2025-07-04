@@ -12,6 +12,7 @@ void test_linked_list()
     LinkedList *list = list_create();
     assert(list != NULL);
     assert(list->head == NULL);
+    assert(list->tail == NULL);
     assert(list->size == 0);
     printf("  PASS: list_create()\n");
 
@@ -25,6 +26,7 @@ void test_linked_list()
     assert(list->size == 2);
     assert(*(int *)list_get(list, 0) == 10);
     assert(*(int *)list_get(list, 1) == 20);
+    assert(list->tail->data == val2);
     printf("  PASS: list_append() and list_get()\n");
 
     // 3. Prepend data
@@ -34,6 +36,7 @@ void test_linked_list()
     assert(list->size == 3);
     assert(*(int *)list_get(list, 0) == 5);
     assert(*(int *)list_get(list, 1) == 10);
+    assert(list->tail->data == val2);
     printf("  PASS: list_prepend()\n");
 
     // 4. Remove data
@@ -41,9 +44,17 @@ void test_linked_list()
     assert(list->size == 2);
     assert(*(int *)list_get(list, 0) == 5);
     assert(*(int *)list_get(list, 1) == 20);
+    assert(list->tail->data == val2);
     printf("  PASS: list_remove()\n");
 
-    // 5. Destroy the list
+    // 5. Remove tail
+    list_remove(list, 1, free); // Remove the tail element (20)
+    assert(list->size == 1);
+    assert(*(int *)list_get(list, 0) == 5);
+    assert(list->tail->data == val0);
+    printf("  PASS: list_remove() tail\n");
+
+    // 6. Destroy the list
     list_destroy(list, free);
     printf("LinkedList test complete.\n\n");
 }

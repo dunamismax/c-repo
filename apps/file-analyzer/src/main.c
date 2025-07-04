@@ -42,66 +42,25 @@ LinkedList *process_file(FILE *file, FileStats *stats)
         return NULL;
     }
 
-    char *word_buffer = (char *)calloc(INITIAL_WORD_CAPACITY, sizeof(char));
-    if (!word_buffer)
+    char line[1024];
+    while (fgets(line, sizeof(line), file))
     {
-        perror("Failed to allocate word buffer");
-        list_destroy(word_list, free_string);
-        return NULL;
-    }
-    int buffer_capacity = INITIAL_WORD_CAPACITY;
-    int word_len = 0;
-    int c;
+        stats->line_count++;
+        stats->char_count += strlen(line);
 
-    while ((c = fgetc(file)) != EOF)
-    {
-        stats->char_count++;
-        if (c == '\n')
+        char *token = strtok(line, " \t\n\r.,;:!?\"'()[]{}");
+        while (token != NULL)
         {
-            stats->line_count++;
-        }
-
-        if (isalnum(c))
-        {
-            if (word_len >= buffer_capacity - 1)
-            {
-                buffer_capacity *= 2;
-                char *new_buffer = (char *)realloc(word_buffer, buffer_capacity);
-                if (!new_buffer)
-                {
-                    perror("Failed to reallocate word buffer");
-                    free(word_buffer);
-                    return word_list; // Return what we have so far
-                }
-                word_buffer = new_buffer;
-            }
-            word_buffer[word_len++] = (char)c;
-        }
-        else if (word_len > 0)
-        {
-            word_buffer[word_len] = '\0';
-            char *new_word = strdup(word_buffer);
+            char *new_word = strdup(token);
             if (new_word)
             {
                 list_append(word_list, new_word);
                 stats->word_count++;
             }
-            word_len = 0;
+            token = strtok(NULL, " \t\n\r.,;:!?\"'()[]{}");
         }
     }
 
-    if (word_len > 0)
-    {
-        word_buffer[word_len] = '\0';
-        char *new_word = strdup(word_buffer);
-        if (new_word)
-        {
-            list_append(word_list, new_word);
-            stats->word_count++;
-        }
-    }
-
-    free(word_buffer);
     return word_list;
 }
 

@@ -14,7 +14,7 @@ Welcome to my C Monorepo. This repository centralizes diverse C applications and
 
 ## Overview
 
-This monorepo serves as a centralized hub for various C applications and shared libraries, promoting code reusability, consistent practices, and simplified dependency management across diverse C projects.
+This monorepo serves as a centralized hub for various C applications and shared libraries, promoting code reusability, consistent practices, and simplified dependency management across diverse C projects. It has been optimized to build and run on macOS with arm64 architecture.
 
 ---
 
@@ -46,7 +46,9 @@ c-repo/
 ├── tools/                        # Helper scripts (e.g., build_all.sh)
 ├── .gitignore
 ├── LICENSE
-└── c-repo-image.png    # Placeholder image for the README
+├── Makefile                      # Root Makefile
+├── Makefile.build                # Build logic for the root Makefile
+└── c-repo-image.png              # Placeholder image for the README
 ```
 
 </details>
@@ -60,10 +62,14 @@ To get started, clone the repository and run the build script:
 ```bash
 git clone https://github.com/dunamismax/c-repo.git
 cd c-repo
-./tools/build_all.sh
+make
 ```
 
-This script builds all libraries, applications, and runs all tests.
+This will build all libraries and applications. To run the tests, use:
+
+```bash
+make test
+```
 
 ---
 
@@ -77,15 +83,15 @@ Enhanced with robust floating-point input validation and division-by-zero preven
 
 ### [File Analyzer](apps/file-analyzer)
 
-Refactored for better modularity, dynamic word buffering, and improved tokenization.
+Refactored for better modularity, dynamic word buffering, and improved tokenization using `strtok` to handle a wider range of delimiters.
 
 ### [Contact Book](apps/contact-book)
 
-Now includes a `delete` command, improved user feedback, and refactored main function.
+Now includes a `delete` command, improved user feedback, and a portable case-insensitive search function.
 
 ### [Tiny Server](apps/tiny-server)
 
-Features graceful shutdown, concurrent connection handling, and basic HTTP request logging.
+Features graceful shutdown and concurrent connection handling using `pthreads` for better performance on macOS.
 
 ---
 
@@ -93,7 +99,11 @@ Features graceful shutdown, concurrent connection handling, and basic HTTP reque
 
 ### `core/data_structures`
 
-Refactored to a more robust `LinkedList` API with functions for creation, destruction, appending, prepending, getting, and removing nodes.
+Refactored to a more robust `LinkedList` API with a `tail` pointer for O(1) append operations.
+
+### `core/utils`
+
+Added a portable case-insensitive string search function `str_case_str`.
 
 ### `libs/net_lib`
 
@@ -109,17 +119,14 @@ The test suite has been expanded to include comprehensive tests for the new `Lin
 
 ## Development Workflow
 
-Modify `.c` and `.h` files as needed, then rebuild and test:
+Modify `.c` and `.h` files as needed, then rebuild and test from the root directory:
 
 ```bash
-# Rebuild and test the entire monorepo
-./tools/build_all.sh
+# Rebuild the entire monorepo
+make
 
-# Or, build and test specific components (e.g., after changes in math_lib)
-cd libs/math_lib && make
-cd ../../apps/calculator && make
-cd ../../tests/libs && make
-./build/test/test_my_lib
+# Run all tests
+make test
 ```
 
 ---

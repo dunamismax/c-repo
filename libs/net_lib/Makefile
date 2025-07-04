@@ -1,32 +1,22 @@
-CC = gcc
-CFLAGS = -Iinclude -Wall -Wextra -std=c99
+# net_lib Makefile
+include ../../build/common.mk
 
-BUILD_DIR = ../../build
-OBJ_DIR = $(BUILD_DIR)/obj/net_lib
-LIB_DIR = $(BUILD_DIR)/lib
+# Override CFLAGS to include its own include directory
+CFLAGS += -Iinclude
 
+# Specifics for this target
 SRCS = src/net_lib.c
-OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o)))
-
-TARGET = $(LIB_DIR)/libnet.a
-
-.PHONY: all clean
+OBJS = $(patsubst src/%.c,obj/net_lib/%.o,$(SRCS))
+TARGET = lib/libnet.a
 
 all: $(TARGET)
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
-$(LIB_DIR):
-	mkdir -p $(LIB_DIR)
-
-$(TARGET): $(OBJS) $(LIB_DIR)
+$(TARGET): $(OBJS)
 	ar rcs $@ $(OBJS)
 
-$(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)
+obj/net_lib/%.o: src/%.c
+	mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)
-	rmdir $(OBJ_DIR) 2>/dev/null || true
-	rmdir $(LIB_DIR) 2>/dev/null || true

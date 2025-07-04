@@ -61,15 +61,12 @@ int list_append(LinkedList *list, void *data)
     if (list->head == NULL)
     {
         list->head = new_node;
+        list->tail = new_node;
     }
     else
     {
-        Node *last = list->head;
-        while (last->next != NULL)
-        {
-            last = last->next;
-        }
-        last->next = new_node;
+        list->tail->next = new_node;
+        list->tail = new_node;
     }
     list->size++;
     return 0;
@@ -137,6 +134,10 @@ int list_remove(LinkedList *list, size_t index, free_data_func free_func)
     {
         to_delete = list->head;
         list->head = list->head->next;
+        if (list->size == 1)
+        {
+            list->tail = NULL;
+        }
     }
     else
     {
@@ -147,6 +148,10 @@ int list_remove(LinkedList *list, size_t index, free_data_func free_func)
         }
         to_delete = current->next;
         current->next = to_delete->next;
+        if (current->next == NULL)
+        {
+            list->tail = current;
+        }
     }
 
     if (free_func != NULL)
