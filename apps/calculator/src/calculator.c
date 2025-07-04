@@ -1,5 +1,4 @@
 /*******************************************************************************
- *
  * @file calculator.c
  * @brief A simple command-line calculator program.
  *
@@ -40,14 +39,17 @@ static double calculate(double num1, char op, double num2);
  * @param argv An array of command-line argument strings.
  * @return EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     // Validate the number of command-line arguments.
-    if (argc != 4) {
+    if (argc != 4)
+    {
         print_usage_and_exit(argv[0]);
     }
 
     // The operator should be a single character.
-    if (strlen(argv[2]) != 1) {
+    if (strlen(argv[2]) != 1)
+    {
         fprintf(stderr, "Error: Invalid operator '%s'. Operator must be a single character: +, -, *, or /\n", argv[2]);
         return EXIT_FAILURE;
     }
@@ -72,7 +74,8 @@ int main(int argc, char *argv[]) {
  *
  * @param prog_name The name of the program executable.
  */
-static void print_usage_and_exit(const char *prog_name) {
+static void print_usage_and_exit(const char *prog_name)
+{
     fprintf(stderr, "Usage: %s <number1> <operator> <number2>\n", prog_name);
     fprintf(stderr, "  A simple command-line calculator.\n\n");
     fprintf(stderr, "Arguments:\n");
@@ -94,22 +97,26 @@ static void print_usage_and_exit(const char *prog_name) {
  * @param str The string to convert.
  * @return The parsed double value. Exits the program on failure.
  */
-static double parse_double(const char *str) {
+static double parse_double(const char *str)
+{
     char *endptr;
     errno = 0; // Reset errno before the call.
 
     const double value = strtod(str, &endptr);
 
     // Check for various conversion errors.
-    if (endptr == str) {
+    if (endptr == str)
+    {
         fprintf(stderr, "Error: Invalid number provided. '%s' is not a valid number.\n", str);
         exit(EXIT_FAILURE);
     }
-    if (*endptr != '\0') {
+    if (*endptr != '\0')
+    {
         fprintf(stderr, "Error: Trailing characters found after number: '%s'\n", endptr);
         exit(EXIT_FAILURE);
     }
-    if (errno == ERANGE) {
+    if (errno == ERANGE)
+    {
         fprintf(stderr, "Error: Number '%s' is out of the representable range.\n", str);
         exit(EXIT_FAILURE);
     }
@@ -125,22 +132,25 @@ static double parse_double(const char *str) {
  * @param num2 The second operand.
  * @return The result of the calculation. Exits the program on error (e.g., division by zero).
  */
-static double calculate(double num1, char op, double num2) {
-    switch (op) {
-        case '+':
-            return num1 + num2;
-        case '-':
-            return num1 - num2;
-        case '*':
-            return num1 * num2;
-        case '/':
-            if (num2 == 0) {
-                fprintf(stderr, "Error: Division by zero is not allowed.\n");
-                exit(EXIT_FAILURE);
-            }
-            return num1 / num2;
-        default:
-            fprintf(stderr, "Error: Invalid operator '%c'. Supported operators are +, -, *, /\n", op);
+static double calculate(double num1, char op, double num2)
+{
+    switch (op)
+    {
+    case '+':
+        return num1 + num2;
+    case '-':
+        return num1 - num2;
+    case '*':
+        return num1 * num2;
+    case '/':
+        if (num2 == 0)
+        {
+            fprintf(stderr, "Error: Division by zero is not allowed.\n");
             exit(EXIT_FAILURE);
+        }
+        return num1 / num2;
+    default:
+        fprintf(stderr, "Error: Invalid operator '%c'. Supported operators are +, -, *, /\n", op);
+        exit(EXIT_FAILURE);
     }
 }
