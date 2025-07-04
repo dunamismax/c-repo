@@ -1,4 +1,0 @@
-This is a test file.
-It has a few lines.
-And some words.
-Is the word count prime?
