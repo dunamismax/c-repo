@@ -13,7 +13,7 @@ Welcome to the C Monorepo. This repository centralizes diverse C applications, d
 
 ## Overview
 
-This monorepo serves as a centralized hub for various C applications. Each application is self-contained and can be compiled and run independently.
+This monorepo serves as a centralized hub for various C applications. Each application is a self-contained, single-file program that can be easily compiled and run independently using the provided `Makefile`.
 
 ---
 
@@ -27,8 +27,10 @@ c-repo/
 │   ├── file-analyzer/            # Text file analyzer
 │   └── tiny-server/              # Simple HTTP web server
 │
+├── bin/                          # Compiled application binaries
 ├── .gitignore
 ├── LICENSE
+├── Makefile                      # Main build script for all applications
 └── c-repo-image.png
 ```
 
@@ -36,33 +38,39 @@ c-repo/
 
 ## Quick Start
 
-To get started, clone the repository and navigate to the application you want to use.
+To get started, clone the repository, build the applications, and run them from the `bin` directory.
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/dunamismax/c-repo.git
-cd c-repo/apps
+cd c-repo
+
+# 2. Build all applications
+make
+
+# 3. Run an application
+./bin/calculator 10 + 5
 ```
 
 ---
 
 ## Projects Overview
 
-This monorepo hosts several independent C applications.
+This monorepo hosts several independent C applications, each contained within a single source file.
 
-### [Calculator](apps/calculator/src/main.c)
+### [Calculator](apps/calculator/src/calculator.c)
 
-A command-line calculator that performs basic arithmetic (`+`, `-`, `*`, `/`). It handles floating-point inputs and includes error checking for invalid input and division-by-zero.
+A command-line calculator that performs basic arithmetic (`+`, `-`, `*`, `/`). It handles floating-point inputs and includes robust error checking for invalid input and division-by-zero.
 
-### [File Analyzer](apps/file-analyzer/src/main.c)
+### [File Analyzer](apps/file-analyzer/src/file-analyzer.c)
 
 A utility that provides statistics for a given text file, including character, word, and line counts. It uses a robust tokenizer to correctly identify words separated by various delimiters.
 
-### [Contact Book](apps/contact-book/src/main.c)
+### [Contact Book](apps/contact-book/src/contact-book.c)
 
 A command-line application for managing a list of contacts. It supports adding, listing, finding (with case-insensitive search), and deleting contacts. The contact list is persisted to a local `contacts.csv` file.
 
-### [Tiny Server](apps/tiny-server/src/main.c)
+### [Tiny Server](apps/tiny-server/src/tiny-server.c)
 
 A simple, multi-threaded HTTP server that handles concurrent connections gracefully. It demonstrates socket programming by serving a basic HTML page and logging requests to the console.
 
@@ -70,62 +78,40 @@ A simple, multi-threaded HTTP server that handles concurrent connections gracefu
 
 ## How to Compile and Run
 
-To compile and run an application, navigate to its directory and use a C compiler like `gcc`.
+This project uses a `Makefile` for easy compilation of all applications. The compiled binaries are placed in the `bin` directory.
 
-### Calculator
+### Build All Applications
+
+To build all applications, run the `make` command from the root of the repository:
 
 ```bash
-# Navigate to the calculator app directory
-cd apps/calculator/src
-
-# Compile the C file
-gcc main.c -o calculator
-
-# Run the executable
-./calculator 10 + 5
+make
 ```
 
-### Contact Book
+### Run Applications
+
+Once compiled, you can run the applications from the `bin` directory:
 
 ```bash
-# Navigate to the contact book app directory
-cd apps/contact-book/src
+# Run the calculator
+./bin/calculator 25 / 4
 
-# Compile the C file
-gcc main.c -o contact_book
+# Add a contact to the contact book
+./bin/contact-book add "Jane Doe" "555-5678" "jane.doe@example.com"
 
-# Run the executable
-./contact_book add "John Doe" "555-1234" "john.doe@example.com"
-./contact_book list
+# Analyze a file
+./bin/file-analyzer README.md
+
+# Start the tiny server
+./bin/tiny-server
 ```
 
-### File Analyzer
+### Clean Build Artifacts
+
+To remove all compiled files, run:
 
 ```bash
-# Navigate to the file analyzer app directory
-cd apps/file-analyzer/src
-
-# Create a sample file to analyze
-echo "hello world" > test.txt
-
-# Compile the C file
-gcc main.c -o file_analyzer
-
-# Run the executable
-./file_analyzer test.txt
-```
-
-### Tiny Server
-
-```bash
-# Navigate to the tiny server app directory
-cd apps/tiny-server/src
-
-# Compile the C file
-gcc main.c -o tiny_server -lpthread
-
-# Run the executable
-./tiny_server
+make clean
 ```
 
 ---
