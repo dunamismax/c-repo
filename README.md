@@ -2,10 +2,9 @@
   <img src="./c-repo-image.png" alt="C Monorepo logo" width="250"/>
 </p>
 
-Welcome to the C Monorepo. This repository centralizes diverse C applications and reusable libraries, designed for efficient, scalable, and maintainable project management.
+Welcome to the C Monorepo. This repository centralizes diverse C applications, designed for efficient, scalable, and maintainable project management.
 
 [![Language: C](https://img.shields.io/badge/Language-C-A8B9CC.svg)](<https://en.wikipedia.org/wiki/C_(programming_language)>)
-[![Build System: Make](https://img.shields.io/badge/Build%20System-Make-blue.svg)](https://www.gnu.org/software/make/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/dunamismax/c-repo/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/dunamismax/c-repo/pulls)
 [![GitHub Stars](https://img.shields.io/github/stars/dunamismax/c-repo?style=social)](https://github.com/dunamismax/c-repo/stargazers)
@@ -14,14 +13,11 @@ Welcome to the C Monorepo. This repository centralizes diverse C applications an
 
 ## Overview
 
-This monorepo serves as a centralized hub for various C applications and shared libraries, promoting code reusability, consistent practices, and simplified dependency management. The entire project is built using a unified Makefile system and is optimized to run on macOS (arm64) and other Unix-like systems.
+This monorepo serves as a centralized hub for various C applications. Each application is self-contained and can be compiled and run independently.
 
 ---
 
 ## Repository Structure
-
-<details>
-<summary><strong>Click to expand repository layout</strong></summary>
 
 ```sh
 c-repo/
@@ -31,106 +27,106 @@ c-repo/
 │   ├── file-analyzer/            # Text file analyzer
 │   └── tiny-server/              # Simple HTTP web server
 │
-├── libs/                         # Shared libraries
-│   ├── math_lib/                 # Basic mathematical operations
-│   └── net_lib/                  # Networking operations
-│
-├── core/                         # Fundamental code (data structures, utilities)
-│
-├── tests/                        # Test files for libraries and core components
-│   ├── core/
-│   └── libs/
-│
-├── build/                        # Compiled output (binaries, libraries, objects)
-├── docs/                         # Documentation
-├── tools/                        # Helper scripts
 ├── .gitignore
 ├── LICENSE
-├── Makefile                      # Root Makefile to orchestrate the build
 └── c-repo-image.png
 ```
-
-</details>
 
 ---
 
 ## Quick Start
 
-To get started, clone the repository, build all projects, and run the tests:
+To get started, clone the repository and navigate to the application you want to use.
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/dunamismax/c-repo.git
-cd c-repo
-
-# 2. Build all libraries and applications
-make
-
-# 3. Run all tests to verify the build
-make test
+cd c-repo/apps
 ```
-The compiled binaries can be found in the `build/bin` directory.
 
 ---
 
 ## Projects Overview
 
-This monorepo hosts several independent C applications that leverage the shared libraries.
+This monorepo hosts several independent C applications.
 
-### [Calculator](apps/calculator)
+### [Calculator](apps/calculator/src/main.c)
+
 A command-line calculator that performs basic arithmetic (`+`, `-`, `*`, `/`). It handles floating-point inputs and includes error checking for invalid input and division-by-zero.
 
-### [File Analyzer](apps/file-analyzer)
+### [File Analyzer](apps/file-analyzer/src/main.c)
+
 A utility that provides statistics for a given text file, including character, word, and line counts. It uses a robust tokenizer to correctly identify words separated by various delimiters.
 
-### [Contact Book](apps/contact-book)
+### [Contact Book](apps/contact-book/src/main.c)
+
 A command-line application for managing a list of contacts. It supports adding, listing, finding (with case-insensitive search), and deleting contacts. The contact list is persisted to a local `contacts.csv` file.
 
-### [Tiny Server](apps/tiny-server)
+### [Tiny Server](apps/tiny-server/src/main.c)
+
 A simple, multi-threaded HTTP server that handles concurrent connections gracefully. It demonstrates socket programming by serving a basic HTML page and logging requests to the console.
 
 ---
 
-## Core & Libraries Overview
+## How to Compile and Run
 
-The shared code is organized into `core` and `libs` to promote reusability.
+To compile and run an application, navigate to its directory and use a C compiler like `gcc`.
 
-### `core`
-Provides fundamental data structures and utility functions used across the monorepo.
--   **`data_structures`**: Includes a generic and efficient `LinkedList` implementation with O(1) append operations.
--   **`utils`**: Contains helper functions, such as a prime number checker and a portable case-insensitive string search utility.
+### Calculator
 
-### `libs`
-Contains shared libraries for more specific, high-level functionalities.
--   **`math_lib`**: A library for basic mathematical operations.
--   **`net_lib`**: A library that abstracts low-level socket operations for networking applications.
+```bash
+# Navigate to the calculator app directory
+cd apps/calculator/src
 
----
+# Compile the C file
+gcc main.c -o calculator
 
-## Testing
+# Run the executable
+./calculator 10 + 5
+```
 
-The repository includes a suite of tests for the core components and libraries to ensure their correctness and stability.
--   Tests are located in the `tests/` directory.
--   The test suite can be executed by running `make test` from the root directory.
--   Current tests cover the `LinkedList` API, the `math_lib`, and the `net_lib` socket functions.
+### Contact Book
 
----
+```bash
+# Navigate to the contact book app directory
+cd apps/contact-book/src
 
-## Development Workflow
+# Compile the C file
+gcc main.c -o contact_book
 
-1.  Modify `.c` and `.h` files in the `apps`, `libs`, or `core` directories.
-2.  Rebuild the specific component or the entire project from the root directory:
-    ```bash
-    # Rebuild the entire monorepo
-    make
+# Run the executable
+./contact_book add "John Doe" "555-1234" "john.doe@example.com"
+./contact_book list
+```
 
-    # Or, build a specific application (e.g., calculator)
-    make -C apps/calculator
-    ```
-3.  Run the tests to ensure your changes haven't introduced regressions:
-    ```bash
-    make test
-    ```
+### File Analyzer
+
+```bash
+# Navigate to the file analyzer app directory
+cd apps/file-analyzer/src
+
+# Create a sample file to analyze
+echo "hello world" > test.txt
+
+# Compile the C file
+gcc main.c -o file_analyzer
+
+# Run the executable
+./file_analyzer test.txt
+```
+
+### Tiny Server
+
+```bash
+# Navigate to the tiny server app directory
+cd apps/tiny-server/src
+
+# Compile the C file
+gcc main.c -o tiny_server -lpthread
+
+# Run the executable
+./tiny_server
+```
 
 ---
 

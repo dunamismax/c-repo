@@ -1,7 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> // For strcmp
-#include "math_lib.h"
+
+// Function prototypes for mathematical operations
+double add(double a, double b);
+double subtract(double a, double b);
+double multiply(double a, double b);
+double divide(double a, double b);
+
+// Function to add two numbers
+double add(double a, double b)
+{
+    return a + b;
+}
+
+// Function to subtract two numbers
+double subtract(double a, double b)
+{
+    return a - b;
+}
+
+// Function to multiply two numbers
+double multiply(double a, double b)
+{
+    return a * b;
+}
+
+// Function to divide two numbers
+double divide(double a, double b)
+{
+    return a / b;
+}
 
 int main(int argc, char *argv[])
 {

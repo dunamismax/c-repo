@@ -6,7 +6,99 @@
 #include <signal.h>
 #include <pthread.h>
 #include <errno.h>
-#include "net_lib.h"
+#include <netinet/in.h>
+
+int socket_create();
+int socket_bind(int sockfd, int port);
+int socket_listen(int sockfd, int backlog);
+int create_server_socket(int port);
+
+/**
+ * @brief Creates a new TCP socket.
+ * @return The socket file descriptor, or -1 on failure.
+ */
+int socket_create()
+{
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0)
+    {
+        perror("socket_create failed");
+    }
+    return sockfd;
+}
+
+/**
+ * @brief Binds a socket to a specified port.
+ * @param sockfd The socket file descriptor.
+ * @param port The port to bind to.
+ * @return 0 on success, -1 on failure.
+ */
+int socket_bind(int sockfd, int port)
+{
+    struct sockaddr_in address;
+    int opt = 1;
+
+    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
+    {
+        perror("setsockopt failed");
+        return -1;
+    }
+
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(port);
+
+    if (bind(sockfd, (struct sockaddr *)&address, sizeof(address)) < 0)
+    {
+        perror("socket_bind failed");
+        return -1;
+    }
+    return 0;
+}
+
+/**
+ * @brief Puts a socket into listening mode.
+ * @param sockfd The socket file descriptor.
+ * @param backlog The maximum length of the queue of pending connections.
+ * @return 0 on success, -1 on failure.
+ */
+int socket_listen(int sockfd, int backlog)
+{
+    if (listen(sockfd, backlog) < 0)
+    {
+        perror("socket_listen failed");
+        return -1;
+    }
+    return 0;
+}
+
+/**
+ * @brief Creates a TCP server socket, binds it, and starts listening.
+ * @param port The port to listen on.
+ * @return The server socket file descriptor, or -1 on failure.
+ */
+int create_server_socket(int port)
+{
+    int server_fd = socket_create();
+    if (server_fd < 0)
+    {
+        return -1;
+    }
+
+    if (socket_bind(server_fd, port) < 0)
+    {
+        close(server_fd);
+        return -1;
+    }
+
+    if (socket_listen(server_fd, 3) < 0)
+    {
+        close(server_fd);
+        return -1;
+    }
+
+    return server_fd;
+}
 
 #define PORT 8080
 #define BUFFER_SIZE 1024
@@ -46,6 +138,7 @@ int main(void)
         {
             if (errno == EINTR)
             {
+                free(new_socket);
                 break;
             }
             perror("accept");
@@ -87,14 +180,14 @@ void *handle_client(void *client_socket_ptr)
                            "\r\n"
                            "<!DOCTYPE html><html><head><title>C-Repo</title></head><body><h1>Welcome</h1><p>to the tiny C server!</p></body></html>";
 
-    long bytes_read = read(client_socket, buffer, BUFFER_SIZE - 1);
+    long bytes_read = recv(client_socket, buffer, BUFFER_SIZE - 1, 0);
     if (bytes_read > 0)
     {
         printf("--- Received Request ---\n%s\n------------------------\n", buffer);
 
         // Simple request parsing
         char method[16], path[256];
-        sscanf(buffer, "%s %s", method, path);
+        sscanf(buffer, "%15s %255s", method, path);
 
         if (strcmp(path, "/") == 0)
         {
