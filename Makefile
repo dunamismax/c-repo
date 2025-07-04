@@ -6,7 +6,7 @@
 # --- Configuration ---
 CC := gcc
 CFLAGS := -Wall -Wextra -std=c11 -g -O2
-LDFLAGS := 
+LDFLAGS :=
 
 # --- Project Layout ---
 BIN_DIR := bin
